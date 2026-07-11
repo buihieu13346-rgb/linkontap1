@@ -1092,7 +1092,11 @@ function submitAnswer(){
 
     }
 
-    result.innerHTML = `Điểm: ${score}/4<br><br>${html}`;
+    done[index]=true;
+
+result.innerHTML=`Điểm: ${score}/4<br><br>${html}`;
+
+renderQuestionList();
 
     if(index<questions.length-1)
         nextBtn.classList.remove("hidden");
