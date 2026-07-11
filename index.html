@@ -982,6 +982,22 @@ questions.forEach(q=>{
 
 let shuffleMode=false;
 let index=0;
+    function toggleShuffle(){
+
+    shuffleMode=!shuffleMode;
+
+    if(shuffleMode){
+        shuffle(questions);
+    }else{
+        questions.sort((a,b)=>
+            Number(a.question.match(/\d+/)[0])-
+            Number(b.question.match(/\d+/)[0])
+        );
+    }
+
+    index=0;
+    loadQuestion();
+}
     
 function loadQuestion(){
     const c=document.querySelector(".container");
