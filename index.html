@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ôn tập Đúng/Sai</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:system-ui,sans-serif;
+}
+
+:root{
+    --main:#4f46e5;
+    --bg:#eef4ff;
+    --card:#fff;
+    --border:#d6e3ff;
+}
+
+body{
+    background:linear-gradient(-45deg,#eef4ff,#dbeafe,#ede9fe,#f0fdfa);
+    background-size:400% 400%;
+    animation:bgMove 15s ease infinite;
+    padding:18px;
+    color:#222;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    background:var(--card);
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 12px 35px rgba(0,0,0,.12);
+    animation:pop .5s;
+}
+
+.progress{
+    margin-bottom:20px;
+    font-size:15px;
+    color:#666;
+}
+
+h2{
+    margin-bottom:24px;
+    line-height:1.5;
+}
+
+.statement{
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px;
+    margin-bottom:18px;
+    transition:.2s;
+}
+
+.statement:hover{
+    border-color:var(--main);
+}
+
+.statement>div:first-child{
+    font-size:17px;
+    line-height:1.6;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:18px;
+}
+
+.options label{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    user-select:none;
+    transition:.2s;
+}
+
+.options label:hover{
+    background:#f5f9ff;
+    border-color:var(--main);
+}
+
+input[type=radio]{
+    width:18px;
+    height:18px;
+}
+
+button{
+    border:none;
+    border-radius:12px;
+    padding:14px 28px;
+    font-size:16px;
+    cursor:pointer;
+    background:var(--main);
+    color:#fff;
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 12px 28px rgba(79,70,229,.3);
+}
+
+#nextBtn{
+    background:#16a34a;
+}
+
+.result{
+    margin-top:24px;
+    padding-top:20px;
+    border-top:1px solid #e5e7eb;
+    line-height:2;
+    font-size:17px;
+}
+
+.correct{
+    color:#16a34a;
+}
+
+.wrong{
+    color:#dc2626;
+}
+
+.hidden{
+    display:none;
+}
+
+@media (max-width:700px){
+
+body{
+    padding:10px;
+}
+
+.container{
+    padding:16px;
+    border-radius:14px;
+}
+
+.options{
+    grid-template-columns:1fr;
+}
+
+button{
+    width:100%;
+    margin-top:10px;
+}
+
+h2{
+    font-size:21px;
+}
+
+.statement{
+    padding:14px;
+}
+
+}
+.statement:nth-child(1){animation-delay:.05s}
+.statement:nth-child(2){animation-delay:.12s}
+.statement:nth-child(3){animation-delay:.19s}
+.statement:nth-child(4){animation-delay:.26s}
+
+.correct,
+.wrong{
+    animation:show .35s;
+}
+
+@keyframes show{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+@keyframes pop{
+    from{
+        opacity:0;
+        transform:scale(.97);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes bgMove{
+    0%{background-position:0 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0 50%}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="progress" id="progress"></div>
+
+<h2 id="question"></h2>
+
+<div id="statements"></div>
+
+<br>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+
+<button onclick="submitAnswer()">
+Kiểm Tra nhe
+</button>
+
+<button id="nextBtn"
+class="hidden"
+onclick="nextQuestion()">
+Câu tiếp →
+</button>
+
+</div>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+    question:"Câu 1. Xét các phát biểu sau:",
+    statements:[
+        "Mặt Trời là một ngôi sao.",
+        "Trái Đất là hành tinh lớn nhất Hệ Mặt Trời.",
+        "Nước sôi ở 100°C (áp suất thường).",
+        "Con người có 2 lá phổi."
+    ],
+    answer:[true,false,true,true]
+},
+
+{
+    question:"Câu 2. Đánh dấu đúng hoặc sai:",
+    statements:[
+        "HTML là ngôn ngữ lập trình.",
+        "CSS dùng để tạo kiểu giao diện.",
+        "JavaScript chạy được trên trình duyệt.",
+        "2 + 2 = 5."
+    ],
+    answer:[false,true,true,false]
+},
+
+{
+    question:"Câu 3. Kiến thức tổng hợp:",
+    statements:[
+        "Việt Nam nằm ở Đông Nam Á.",
+        "Sông Nile là sông dài nhất thế giới.",
+        "Kim cương mềm hơn sắt.",
+        "Electron mang điện tích âm."
+    ],
+    answer:[
+        true,
+        true,
+        false,
+        true
+    ]
+}
+
+];
+
+let index = 0;
+
+function loadQuestion(){
+    const c=document.querySelector(".container");
+
+c.animate([
+    {opacity:0,transform:"translateX(30px)"},
+    {opacity:1,transform:"translateX(0)"}
+],{
+    duration:350,
+    easing:"ease"
+});
+
+    const q = questions[index];
+
+    progress.innerHTML = `Câu ${index+1}/${questions.length}`;
+
+    question.innerHTML = q.question;
+
+    statements.innerHTML = "";
+
+    q.statements.forEach((text,i)=>{
+
+        statements.innerHTML += `
+        <div class="statement">
+
+            <div><b>${String.fromCharCode(97+i)}.</b> ${text}</div>
+
+            <div class="options">
+
+                <label>
+                    <input type="radio" name="q${i}" value="true">
+                    Đúng
+                </label>
+
+                <label>
+                    <input type="radio" name="q${i}" value="false">
+                    Sai
+                </label>
+
+            </div>
+
+        </div>
+        `;
+
+    });
+
+    result.innerHTML = "";
+    nextBtn.classList.add("hidden");
+
+}
+
+function submitAnswer(){
+
+    const q = questions[index];
+
+    let score = 0;
+
+    let html = "";
+
+    for(let i=0;i<4;i++){
+
+        const choose = document.querySelector(`input[name=q${i}]:checked`);
+
+        if(!choose){
+            alert("Hãy trả lời đầy đủ 4 ý.");
+            return;
+        }
+
+        const user = choose.value==="true";
+
+        const correct = q.answer[i];
+
+        if(user===correct){
+            score++;
+            html += `<div class="correct">${String.fromCharCode(97+i)}. Chính xác</div>`;
+        }else{
+            html += `<div class="wrong">${String.fromCharCode(97+i)}. Sai (Đáp án: ${correct?"Đúng":"Sai"})</div>`;
+        }
+
+    }
+
+    result.innerHTML = `Điểm: ${score}/4<br><br>${html}`;
+
+    if(index<questions.length-1)
+        nextBtn.classList.remove("hidden");
+
+}
+
+function nextQuestion(){
+
+    index++;
+
+    loadQuestion();
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
