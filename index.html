@@ -141,6 +141,25 @@ button:hover{
 .hidden{
     display:none;
 }
+    #questionList{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(42px,1fr));
+    gap:6px;
+    margin:16px 0;
+}
+
+#questionList button{
+    padding:8px;
+    font-size:14px;
+}
+
+#questionList .active{
+    background:#4f46e5;
+}
+
+#questionList .done{
+    background:#16a34a;
+}
 
 @media (max-width:700px){
 
@@ -216,8 +235,13 @@ h2{
 <div class="container">
 
 <div class="progress" id="progress"></div>
+    <label style="display:block;margin:12px 0">
+    <input type="checkbox" id="shuffleQuestions">
+    Đảo câu hỏi
+</label>
 
 <h2 id="question"></h2>
+    <div id="questionList"></div>
 
 <div id="statements"></div>
 
