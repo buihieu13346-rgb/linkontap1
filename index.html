@@ -956,6 +956,12 @@ const questions = [
     
 
 ];
+    const shuffle=a=>{
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+};
     function shuffle(a){
     for(let i=a.length-1;i>0;i--){
         const j=Math.floor(Math.random()*(i+1));
@@ -979,6 +985,8 @@ questions.forEach(q=>{
 shuffle(questions);
 
 let index = 0;
+    let quiz=[...questions];
+const answered=[];
 
 function loadQuestion(){
     const c=document.querySelector(".container");
