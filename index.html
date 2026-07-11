@@ -982,6 +982,17 @@ questions.forEach(q=>{
 
 let shuffleMode=false;
 let index=0;
+    const done=new Array(questions.length).fill(false);
+
+function renderQuestionList(){
+    questionList.innerHTML=questions.map((_,i)=>
+        `<button
+            class="${i===index?"active":""} ${done[i]?"done":""}"
+            onclick="index=${i};loadQuestion()">
+            ${i+1}
+        </button>`
+    ).join("");
+}
     function toggleShuffle(){
 
     shuffleMode=!shuffleMode;
