@@ -988,6 +988,7 @@ let index=0;
     function toggleShuffle(){
 
     shuffleMode=!shuffleMode;
+        shuffleBtn.textContent="Đảo câu: "+(shuffleMode?"ON":"OFF");
 
     if(shuffleMode){
         shuffle(questions);
