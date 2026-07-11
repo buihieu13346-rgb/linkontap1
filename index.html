@@ -279,6 +279,27 @@ const questions = [
 }
 
 ];
+    function shuffle(a){
+    for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+}
+
+questions.forEach(q=>{
+    const arr=q.statements.map((s,i)=>({
+        text:s,
+        answer:q.answer[i]
+    }));
+
+    shuffle(arr);
+
+    q.statements=arr.map(x=>x.text);
+    q.answer=arr.map(x=>x.answer);
+});
+
+shuffle(questions);
 
 let index = 0;
 
